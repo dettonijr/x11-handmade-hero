@@ -14,6 +14,10 @@ X11Window X11Window::CreateSimpleWindow(X11Display* d, int width, int height) {
     Window w = XCreateSimpleWindow(d->ptr(), RootWindow(d->ptr(), screenId), 0, 0, width, height, 1, BlackPixel(d->ptr(), screenId), WhitePixel(d->ptr(), screenId));
     return X11Window(d, w, width, height);
 }
+
+void X11Window::resize(int width, int height) {
+    frame.resize(width, height);
+}
     
 void X11Window::update() {
     Display* dpy = display->ptr();

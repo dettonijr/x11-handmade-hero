@@ -16,6 +16,11 @@ Framebuffer::~Framebuffer() {
 }
 
 void Framebuffer::resize(int width, int height) {
+    if (_width == width && _height == height) {
+        printf("Same size. Do nothing\n");
+        return;
+    }
+
     buf = (uint32_t*) realloc(buf, width*height<<2);
     _width = width;
     _height = height;

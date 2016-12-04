@@ -16,6 +16,8 @@ public:
 
     Framebuffer& get_framebuffer() { return frame; }
 
+    void resize(int width, int height);
+
     void update();
 
     GC gc;
