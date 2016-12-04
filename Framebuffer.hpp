@@ -1,9 +1,12 @@
 #ifndef __FRAMEBUFFER_HPP__
 #define __FRAMEBUFFER_HPP__
 
+#include <X11/Xlib.h>
+class X11Display;
+
 class Framebuffer {
 public:
-    Framebuffer(int width, int height);
+    Framebuffer(X11Display& display, int width, int height);
     ~Framebuffer();
 
     void resize(int width, int height);
@@ -11,11 +14,14 @@ public:
 
     int width() { return _width; }
     int height() { return _height; }
+    XImage* image() { return _image; }
 
 private:
     int _width;
     int _height;
     unsigned char* buf;
+    XImage* _image;
+    Display* _dpy;
 };
 
 #endif

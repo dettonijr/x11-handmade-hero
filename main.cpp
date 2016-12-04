@@ -18,7 +18,7 @@ int main() {
     d.map_window(w);      
     d.flush();;      
 
-    Framebuffer frame(640, 480);
+    Framebuffer frame(d, 640, 480);
 
     unsigned char off = 0;
     for(;;) {

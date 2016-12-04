@@ -19,9 +19,6 @@ X11Window X11Window::CreateSimpleWindow(X11Display* d, int width, int height) {
     
 void X11Window::draw(Framebuffer& f) {
     Display* dpy = display->ptr();
-
-    XImage* image = XCreateImage(dpy, DefaultVisual(dpy, DefaultScreen(dpy)), DefaultDepth(dpy, DefaultScreen(dpy)), ZPixmap, 0, (char*) f.get_raw_buffer(), f.width(), f.height(), 8, 0);
-    XPutImage(dpy, window, gc, image, 0, 0, 0, 0, f.width(), f.height());
+    XPutImage(dpy, window, gc, f.image(), 0, 0, 0, 0, f.width(), f.height());
     XSync(dpy, False);
-    XFree(image);
 }
