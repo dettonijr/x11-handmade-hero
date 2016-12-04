@@ -21,13 +21,13 @@ int main() {
 
     printf("Depth %d\n", DefaultDepth(d.ptr(), DefaultScreen(d.ptr())));
 
-    Framebuffer frame(d, 640, 480);
+    Framebuffer& frame = w.get_framebuffer();
 
     unsigned char off = 0;
-    for(int i = 0; i < 1000; i++) {
+    for(int i = 0; i < 1000; i--) {
         write_color_to_pixmap(frame.get_raw_buffer(), 640, 480, off++);
-        w.draw(frame);
-//        usleep(3000);
+        w.update();
+        usleep(3000);
     } 
 
     return(0);
