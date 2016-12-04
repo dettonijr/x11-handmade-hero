@@ -13,6 +13,8 @@ public:
     void resize(int width, int height);
     uint32_t* get_raw_buffer();
 
+    void draw_rect(int minx, int miny, int maxx, int maxy, uint8_t r, uint8_t g, uint8_t b);
+
     int width() { return _width; }
     int height() { return _height; }
     XImage* image() { return _image; }
