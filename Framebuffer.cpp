@@ -3,7 +3,7 @@
 #include "X11Display.hpp"
 
 Framebuffer::Framebuffer(X11Display& display, int width, int height) {
-    buf = (unsigned char*) malloc(width*height<<2);
+    buf = (uint32_t*) malloc(width*height<<2);
     _width = width;
     _height = height;
     _dpy = display.ptr();
@@ -16,13 +16,13 @@ Framebuffer::~Framebuffer() {
 }
 
 void Framebuffer::resize(int width, int height) {
-    buf = (unsigned char*) realloc(buf, width*height<<2);
+    buf = (uint32_t*) realloc(buf, width*height<<2);
     _width = width;
     _height = height;
     XFree(_image);
     _image = XCreateImage(_dpy, DefaultVisual(_dpy, DefaultScreen(_dpy)), DefaultDepth(_dpy, DefaultScreen(_dpy)), ZPixmap, 0, (char*) buf, _width, _height, 8, 0);
 }
 
-unsigned char* Framebuffer::get_raw_buffer() {
+uint32_t* Framebuffer::get_raw_buffer() {
     return buf;
 }
