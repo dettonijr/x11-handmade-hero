@@ -113,7 +113,7 @@ int main() {
                 w.resize(xce.width, xce.height);
             }   
         }
-        update_grid();    
+        //update_grid();    
         draw_grid(frame);
         //write_color_to_pixmap(frame, frame.width(), frame.height(), off++);
         w.update();

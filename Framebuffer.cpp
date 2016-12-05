@@ -50,8 +50,8 @@ void Framebuffer::draw_rect(int minx, int miny, int maxx, int maxy, uint8_t r, u
     for (int y = miny; y < maxy; y++) {
         uint32_t* pixelstart = buf + y*_width + minx;
         uint32_t* pixelend = pixelstart + maxx - minx;
-        do {
+        while (pixelstart < pixelend) {
              *pixelstart++ = color;
-        } while (pixelstart < pixelend);
+        }
     }
 }
