@@ -7,4 +7,6 @@ include_directories(${X11_INCLUDE_DIR})
 
 add_library(X11Wrap X11Display.cpp X11Window.cpp Framebuffer.cpp)
 add_executable(main main.cpp)
+add_executable(life life.cpp)
 target_link_libraries(main X11Wrap ${X11_LIBRARIES})
+target_link_libraries(life X11Wrap ${X11_LIBRARIES})
