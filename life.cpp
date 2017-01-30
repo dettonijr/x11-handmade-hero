@@ -2,6 +2,7 @@
 #include "Framebuffer.hpp"
 #include <unistd.h>
 #include <stdint.h>
+#include <stdio.h>
 
 int grid[14*22] = {
     0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

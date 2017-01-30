@@ -2,6 +2,7 @@
 #include "Framebuffer.hpp"
 #include <unistd.h>
 #include <stdint.h>
+#include <stdio.h>
 
 void write_color_to_pixmap(Framebuffer& f, int width, int height, unsigned char offset) {
     uint32_t* bitmap = f.get_raw_buffer();
