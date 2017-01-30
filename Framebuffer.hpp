@@ -3,6 +3,7 @@
 
 #include <X11/Xlib.h>
 #include <stdint.h>
+#include "Color.h"
 class X11Display;
 
 class Framebuffer {
@@ -13,10 +14,10 @@ public:
     void resize(int width, int height);
     uint32_t* get_raw_buffer();
 
-    void set_pixel(int x, int y, uint8_t r, uint8_t g, uint8_t b);
-    void fill(uint8_t r, uint8_t g, uint8_t b);
-    void draw_line(int x0, int y0, int x1, int y1, uint8_t r, uint8_t g, uint8_t b);
-    void draw_rect(int minx, int miny, int maxx, int maxy, uint8_t r, uint8_t g, uint8_t b);
+    void set_pixel(int x, int y, Color& c);
+    void fill(Color& c);
+    void draw_line(int x0, int y0, int x1, int y1, Color& c);
+    void draw_rect(int minx, int miny, int maxx, int maxy, Color& c);
 
     int width() { return _width; }
     int height() { return _height; }

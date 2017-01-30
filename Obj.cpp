@@ -16,7 +16,6 @@ Obj::Obj(const char * filename) {
         if (command == 'v') {
             float x, y, z;
             ss >> x >> y >> z;
-            printf("Reading v %d %d %d\n", x, y, z);
             Point p(x, y, z);
             verts.push_back(p);
         } else if (command == 'f') { 
@@ -35,5 +34,24 @@ Obj::Obj(const char * filename) {
 
 Obj::~Obj() 
 {
+
+}
+   
+void Obj::draw(Framebuffer& f) {
+    int width = f.width();
+    int height = f.height();
+    for (int i = 0; i < faces.size(); i++) {
+        std::vector<int> face = faces[i];
+        for (int j = 0; j < 3; j++) {
+            Point v0 = verts[face[j]];
+            Point v1 = verts[face[(j+1)%3]];
+            int x0 = (v0.x+1.)*width/2.;
+            int y0 = (v0.y+1.)*height/2.;
+            int x1 = (v1.x+1.)*width/2.;
+            int y1 = (v1.y+1.)*height/2.;
+            Color c(0x00, 0x00, 0x00);
+            f.draw_line(x0, y0, x1, y1, c);
+        }
+    }
 
 }

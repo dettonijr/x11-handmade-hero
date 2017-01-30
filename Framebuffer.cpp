@@ -35,7 +35,7 @@ uint32_t* Framebuffer::get_raw_buffer() {
     return buf;
 }
 
-void Framebuffer::set_pixel(int x, int y, uint8_t r, uint8_t g, uint8_t b) {
+void Framebuffer::set_pixel(int x, int y, Color& c) {
     if (x < 0)
         return;
     else if (x > _width)
@@ -45,18 +45,18 @@ void Framebuffer::set_pixel(int x, int y, uint8_t r, uint8_t g, uint8_t b) {
     else if (y > _height)
         return;
 
-    buf[(_height-y)*_width+x] = r << 16 | g << 8 | b;
+    buf[(_height-y)*_width+x] = c.r << 16 | c.g << 8 | c.b;
 }
 
-void Framebuffer::fill(uint8_t r, uint8_t g, uint8_t b) {
+void Framebuffer::fill(Color& c) {
     for (int i = 0; i < _height; i++) {
         for (int j = 0; j < _width; j++) {
-            buf[i*_width+j] = r << 16 | g << 8 | b;
+            buf[i*_width+j] = c.r << 16 | c.g << 8 | c.b;
         }
     }
 }
 
-void Framebuffer::draw_line(int x0, int y0, int x1, int y1, uint8_t r, uint8_t g, uint8_t b) {
+void Framebuffer::draw_line(int x0, int y0, int x1, int y1, Color& c) {
     // TODO clipping
     int dx = std::abs(x0 - x1); 
     int dy = std::abs(y0 - y1);
@@ -69,7 +69,7 @@ void Framebuffer::draw_line(int x0, int y0, int x1, int y1, uint8_t r, uint8_t g
         for (int x = x0; x <= x1; x++) {
             float t = (x-x0)/(float)(x1-x0);
             int y = y0*(1.-t) + y1*t; 
-            set_pixel(x, y, r, g, b); 
+            set_pixel(x, y, c); 
         } 
     } else {
         if (y0 > y1) {
@@ -79,12 +79,12 @@ void Framebuffer::draw_line(int x0, int y0, int x1, int y1, uint8_t r, uint8_t g
         for (int y = y0; y <= y1; y++) {
             float t = (y-y0)/(float)(y1-y0);
             int x = x0*(1.-t) + x1*t; 
-            set_pixel(x, y, r, g, b); 
+            set_pixel(x, y, c); 
         } 
     }
 }
 
-void Framebuffer::draw_rect(int minx, int miny, int maxx, int maxy, uint8_t r, uint8_t g, uint8_t b) {
+void Framebuffer::draw_rect(int minx, int miny, int maxx, int maxy, Color& c) {
     if (minx > _width || miny > _height)
         return;
     if (minx < 0)
@@ -96,7 +96,7 @@ void Framebuffer::draw_rect(int minx, int miny, int maxx, int maxy, uint8_t r, u
     if (maxy > _height)
         maxy = _height;
 
-    uint32_t color = r << 16 | g << 8 << b;
+    uint32_t color = c.r << 16 | c.g << 8 << c.b;
 
     for (int y = miny; y < maxy; y++) {
         uint32_t* pixelstart = buf + y*_width + minx;

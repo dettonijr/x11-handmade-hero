@@ -66,9 +66,9 @@ void draw_grid(Framebuffer& f) {
     for(int i = 0; i < 14; i++) {
         for(int j = 0; j < 22; j++) {
             if(getstate(grid, i, j))
-                f.draw_rect(j*tilewidth, i*tileheight, j*tilewidth+tilewidth, i*tileheight+tileheight, 0xff, 0x00, 0x00); 
+                f.draw_rect(j*tilewidth, i*tileheight, j*tilewidth+tilewidth, i*tileheight+tileheight, Color::Red); 
             else
-                f.draw_rect(j*tilewidth, i*tileheight, j*tilewidth+tilewidth, i*tileheight+tileheight, 0x00, 0x00, 0x00); 
+                f.draw_rect(j*tilewidth, i*tileheight, j*tilewidth+tilewidth, i*tileheight+tileheight, Color::Black); 
         }
     }
 }
