@@ -37,6 +37,11 @@ int main() {
         frame.draw_line(13, 20, 80, 40, Color::Black);
         frame.draw_line(20, 13, 40, 80, Color::Red);
         frame.draw_line(80, 40, 13, 20, Color::Red);
+        frame.draw_line(50, 50, 80, 75, Color::Blue);
+        frame.draw_line(80, 75, 130, 75, Color::Blue);
+        frame.draw_line(130, 75, 100, 50, Color::Blue);
+        frame.draw_line(100, 50, 50, 50, Color::Blue);
+        frame.draw_line(80, 75, 100, 50, Color::Blue);
         o.draw(frame);
         w.update();
         if (i % 100 == 0) {

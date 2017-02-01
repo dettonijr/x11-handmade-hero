@@ -45,7 +45,11 @@ void Framebuffer::set_pixel(int x, int y, Color& c) {
     else if (y > _height)
         return;
 
-    buf[(_height-y)*_width+x] = c.r << 16 | c.g << 8 | c.b;
+    if (y*_width+x > (_width*_height << 2)) {
+        printf("FUDEU\n");
+    }
+
+    buf[y*_width+x] = c.r << 16 | c.g << 8 | c.b;
 }
 
 void Framebuffer::fill(Color& c) {
@@ -57,18 +61,24 @@ void Framebuffer::fill(Color& c) {
 }
 
 void Framebuffer::draw_line(int x0, int y0, int x1, int y1, Color& c) {
-    // TODO clipping
+    // TODO cipping
     int dx = std::abs(x0 - x1); 
     int dy = std::abs(y0 - y1);
-
     if (dx > dy) {
         if (x0 > x1) {
             std::swap(x0, x1);
             std::swap(y0, y1);
         }
+        float deltaerr = dy/(float)dx;
+        float err = deltaerr - 0.5f;
+
+        int y = y0;
         for (int x = x0; x <= x1; x++) {
-            float t = (x-x0)/(float)(x1-x0);
-            int y = y0*(1.-t) + y1*t; 
+            err += deltaerr;
+            if (err >= 0.5f) {
+                err -= 1.0f;
+                y += (y0 > y1 ? -1 : 1);
+            }
             set_pixel(x, y, c); 
         } 
     } else {
@@ -76,9 +86,16 @@ void Framebuffer::draw_line(int x0, int y0, int x1, int y1, Color& c) {
             std::swap(x0, x1);
             std::swap(y0, y1);
         }
+        float deltaerr = dx/(float)dy;
+        float err = deltaerr - 0.5f;
+
+        int x = x0;
         for (int y = y0; y <= y1; y++) {
-            float t = (y-y0)/(float)(y1-y0);
-            int x = x0*(1.-t) + x1*t; 
+            err += deltaerr;
+            if (err >= 0.5f) {
+                err -= 1.0f;
+                x += (x0 > x1 ? -1 : 1);
+            }
             set_pixel(x, y, c); 
         } 
     }
