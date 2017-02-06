@@ -1,12 +1,17 @@
 #include <cstdint>
+#include <random>
 
 struct Color {
     uint8_t r, g, b;
 
-    Color(uint8_t r0, float g0, float b0) : r(r0), g(g0), b(b0) {
+    Color(uint8_t r0, uint8_t g0, uint8_t b0) : r(r0), g(g0), b(b0) {
     }
 
     ~Color() { 
+    }
+
+    static Color random() {
+        return Color(std::rand(), std::rand(), std::rand()); 
     }
 
     static Color White;

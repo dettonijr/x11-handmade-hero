@@ -71,10 +71,44 @@ void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, 
 
 }
 
+int edgeFunction(const Point<int>& v0, const Point<int>& v1, const Point<int>& p) {
+    return (p.x-v0.x)*(v1.y-v0.y) - (p.y-v0.y)*(v1.x-v0.x);
+}
+
 void Framebuffer::draw_triangle(const Point<int>& v0, const Point<int>& v1, const Point<int>& v2, const Color& c) {
-    draw_line(v0, v1, c);
-    draw_line(v1, v2, c);
-    draw_line(v2, v0, c);
+    int minx = _width-1;
+    int maxx = 0;
+    int miny = _height-1;
+    int maxy = 0;
+
+    minx = std::min(v0.x, minx);
+    minx = std::min(v1.x, minx);
+    minx = std::min(v2.x, minx);
+    minx = std::max(0, minx);
+    miny = std::min(v0.y, miny);
+    miny = std::min(v1.y, miny);
+    miny = std::min(v2.y, miny);
+    miny = std::max(0, miny);
+    maxx = std::max(v0.x, maxx);
+    maxx = std::max(v1.x, maxx);
+    maxx = std::max(v2.x, maxx);
+    maxx = std::min(_width-1, maxx);
+    maxy = std::max(v0.y, maxy);
+    maxy = std::max(v1.y, maxy);
+    maxy = std::max(v2.y, maxy);
+    maxy = std::min(_width-1, maxy);
+
+    for (int x = minx; x <= maxx; x++) {
+        for (int y = miny; y <= maxy; y++) {
+            bool inside = true;
+            inside &= edgeFunction(v0,v1,Point<int>(x,y,0)) >= 0;
+            inside &= edgeFunction(v1,v2,Point<int>(x,y,0)) >= 0;
+            inside &= edgeFunction(v2,v0,Point<int>(x,y,0)) >= 0;
+            if (inside)
+                set_pixel(x,y,c);
+
+        }
+    }
 }
 
 void Framebuffer::draw_line(const Point<float>& p0, const Point<float>& p1, const Color& c) {

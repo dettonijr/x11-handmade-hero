@@ -51,11 +51,11 @@ int main() {
         //frame.draw_line(80, 75, 100, 50, Color::Blue);
         o.draw(frame);
         w.update();
-        if (i % 1000 == 0) {
+        if (i % 10 == 0) {
             clock_t end = clock();
             unsigned long micros = end - start;
             start = clock();
-            printf("FPS: %d\n", (int)(1000000000/micros));
+            printf("FPS: %d\n", (int)(10000000/micros));
         }
         usleep(3000);
     } 

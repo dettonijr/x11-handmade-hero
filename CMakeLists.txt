@@ -9,7 +9,7 @@ add_library(X11Wrap X11Display.cpp X11Window.cpp Framebuffer.cpp Obj.cpp Color.c
 add_executable(main main.cpp)
 add_executable(life life.cpp)
 add_executable(tiny tiny.cpp)
-add_definitions(-std=c++11)
+add_definitions(-std=c++11 -g)
 target_link_libraries(main X11Wrap ${X11_LIBRARIES})
 target_link_libraries(life X11Wrap ${X11_LIBRARIES})
 target_link_libraries(tiny X11Wrap ${X11_LIBRARIES})

@@ -43,7 +43,7 @@ void Obj::draw(Framebuffer& f) {
     int height = f.height();
     for (int i = 0; i < faces.size(); i++) {
         std::vector<int> face = faces[i];
-        f.draw_triangle(verts[face[0]], verts[face[1]], verts[face[2]], Color::White); 
+        f.draw_triangle(verts[face[0]], verts[face[1]], verts[face[2]], Color::random()); 
     }
 
 }
