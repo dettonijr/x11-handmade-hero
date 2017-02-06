@@ -1,10 +1,16 @@
+#ifndef POINT_H_
+#define POINT_H_
+
+template<typename T>
 class Point {
 public:
-    float x, y, z;
+    T x, y, z;
 
-    Point(float x0, float y0, float z0) : x(x0), y(y0), z(z0) {
+    Point(T x0, T y0, T z0) : x(x0), y(y0), z(z0) {
     }
 
     ~Point() { 
     }
 };
+
+#endif

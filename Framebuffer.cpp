@@ -35,7 +35,7 @@ uint32_t* Framebuffer::get_raw_buffer() {
     return buf;
 }
 
-void Framebuffer::set_pixel(int x, int y, Color& c) {
+void Framebuffer::set_pixel(int x, int y, const Color& c) {
     if (x < 0)
         return;
     else if (x > _width)
@@ -59,8 +59,38 @@ void Framebuffer::fill(Color& c) {
         }
     }
 }
+    
+void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, const Point<float>& v2, const Color& c) {
+    int x0 = (v0.x+1.)*_width/2.;
+    int y0 = (v0.y+1.)*_height/2.;
+    int x1 = (v1.x+1.)*_width/2.;
+    int y1 = (v1.y+1.)*_height/2.;
+    int x2 = (v2.x+1.)*_width/2.;
+    int y2 = (v2.y+1.)*_height/2.;
+    draw_triangle(Point<int>(x0,y0,0), Point<int>(x1,y1,0), Point<int>(x2,y2,0), c);
 
-void Framebuffer::draw_line(int x0, int y0, int x1, int y1, Color& c) {
+}
+
+void Framebuffer::draw_triangle(const Point<int>& v0, const Point<int>& v1, const Point<int>& v2, const Color& c) {
+    draw_line(v0, v1, c);
+    draw_line(v1, v2, c);
+    draw_line(v2, v0, c);
+}
+
+void Framebuffer::draw_line(const Point<float>& p0, const Point<float>& p1, const Color& c) {
+    int x0 = (p0.x+1.)*_width/2.;
+    int y0 = (p0.y+1.)*_height/2.;
+    int x1 = (p1.x+1.)*_width/2.;
+    int y1 = (p1.y+1.)*_height/2.;
+    draw_line(Point<int>(x0,y0,0), Point<int>(x1,y1,0), c);
+}
+
+   
+void Framebuffer::draw_line(const Point<int>& p0, const Point<int>& p1, const Color& c) {
+    draw_line(p0.x, p0.y, p1.x, p1.y, c);
+}
+
+void Framebuffer::draw_line(int x0, int y0, int x1, int y1, const Color& c) {
     // TODO cipping
     int dx = std::abs(x0 - x1); 
     int dy = std::abs(y0 - y1);

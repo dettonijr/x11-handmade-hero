@@ -9,6 +9,6 @@ public:
     void draw(Framebuffer& f);    
 
 private:
-    std::vector<Point> verts;
+    std::vector<Point<float>> verts;
     std::vector<std::vector<int> > faces;
 };
