@@ -25,7 +25,7 @@ public:
     Point<T> operator*(float c) {
         return Point<T>(x*c, y*c, z*c);
     }
-
+    
     T operator*(const Point<T>& o) {
         return x*o.x + y*o.y + z*o.z;
     }

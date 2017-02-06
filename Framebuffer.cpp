@@ -61,13 +61,7 @@ void Framebuffer::fill(Color& c) {
 }
     
 void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, const Point<float>& v2, const Color& c) {
-    int x0 = (v0.x+1.)*_width/2.;
-    int y0 = (v0.y+1.)*_height/2.;
-    int x1 = (v1.x+1.)*_width/2.;
-    int y1 = (v1.y+1.)*_height/2.;
-    int x2 = (v2.x+1.)*_width/2.;
-    int y2 = (v2.y+1.)*_height/2.;
-    draw_triangle(Point<int>(x0,y0,0), Point<int>(x1,y1,0), Point<int>(x2,y2,0), c);
+    draw_triangle(Point<int>(v0.x,v0.y,v0.z), Point<int>(v1.x,v1.y,v1.z), Point<int>(v2.x,v2.y,v2.z), c);
 }
 
 int edgeFunction(const Point<int>& v0, const Point<int>& v1, const Point<int>& p) {
@@ -111,11 +105,7 @@ void Framebuffer::draw_triangle(const Point<int>& v0, const Point<int>& v1, cons
 }
 
 void Framebuffer::draw_line(const Point<float>& p0, const Point<float>& p1, const Color& c) {
-    int x0 = (p0.x+1.)*_width/2.;
-    int y0 = (p0.y+1.)*_height/2.;
-    int x1 = (p1.x+1.)*_width/2.;
-    int y1 = (p1.y+1.)*_height/2.;
-    draw_line(Point<int>(x0,y0,0), Point<int>(x1,y1,0), c);
+    draw_line(Point<int>(p0.x,p0.y,p0.z), Point<int>(p1.x,p1.y,p1.z), c);
 }
 
    

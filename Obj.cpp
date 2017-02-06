@@ -59,7 +59,7 @@ void Obj::draw(Framebuffer& f, const Point<float> lightVec) {
         float intensity = n*lightVec;
         if (intensity > 0) {
             uint8_t c = intensity*255;
-            f.draw_triangle(v0, v1, v2, Color(c,c,c)); 
+            f.draw_triangle((v0+Point<float>(1.,1.,0))*200, (v1+Point<float>(1.,1.,0))*200, (v2+Point<float>(1.,1.,0))*200, Color(c,c,c)); 
         }
 
     }
