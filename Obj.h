@@ -6,7 +6,7 @@ class Obj {
 public:
     Obj(const char * filename);
     ~Obj();
-    void draw(Framebuffer& f);    
+    void draw(Framebuffer& f, const Point<float> light_vec);    
 
 private:
     std::vector<Point<float>> verts;

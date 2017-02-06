@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "Obj.h"
+#include <cmath>
 
 int main() {
     Obj o("../african_head.obj");
@@ -49,7 +50,7 @@ int main() {
         //frame.draw_line(130, 75, 100, 50, Color::Blue);
         //frame.draw_line(100, 50, 50, 50, Color::Blue);
         //frame.draw_line(80, 75, 100, 50, Color::Blue);
-        o.draw(frame);
+        o.draw(frame, Point<float>(0, std::sin(i/10.), std::cos(i/10.)));
         w.update();
         if (i % 10 == 0) {
             clock_t end = clock();

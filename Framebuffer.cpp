@@ -68,7 +68,6 @@ void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, 
     int x2 = (v2.x+1.)*_width/2.;
     int y2 = (v2.y+1.)*_height/2.;
     draw_triangle(Point<int>(x0,y0,0), Point<int>(x1,y1,0), Point<int>(x2,y2,0), c);
-
 }
 
 int edgeFunction(const Point<int>& v0, const Point<int>& v1, const Point<int>& p) {

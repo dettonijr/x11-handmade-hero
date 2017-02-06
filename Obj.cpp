@@ -38,12 +38,30 @@ Obj::~Obj()
 
 }
    
-void Obj::draw(Framebuffer& f) {
+void Obj::draw(Framebuffer& f, const Point<float> lightVec) {
     int width = f.width();
     int height = f.height();
     for (int i = 0; i < faces.size(); i++) {
         std::vector<int> face = faces[i];
-        f.draw_triangle(verts[face[0]], verts[face[1]], verts[face[2]], Color::random()); 
+        Point<float>& v0 = verts[face[0]];
+        Point<float>& v1 = verts[face[1]];
+        Point<float>& v2 = verts[face[2]];
+
+        Point<float> a = v2-v0; 
+        Point<float> b = v1-v0;
+
+        float nx = a.y*b.z - a.z*b.y; 
+        float ny = a.z*b.x - a.x*b.z; 
+        float nz = a.x*b.y - a.y*b.x; 
+
+        Point<float> n(nx,ny,nz);
+        n.normalize();
+        float intensity = n*lightVec;
+        if (intensity > 0) {
+            uint8_t c = intensity*255;
+            f.draw_triangle(v0, v1, v2, Color(c,c,c)); 
+        }
+
     }
 
 }
