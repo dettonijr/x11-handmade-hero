@@ -10,7 +10,7 @@ int main() {
     Obj o("../african_head.obj");
 
     X11Display d("");
-    X11Window w = X11Window::CreateSimpleWindow(&d, 640, 480);
+    X11Window w = X11Window::CreateSimpleWindow(&d, 640, 640);
     d.map_window(w);      
     d.flush();;      
 
@@ -23,9 +23,9 @@ int main() {
     Framebuffer& frame = w.get_framebuffer();
 
     XEvent ev;
-    Point<int> t0[3] = {Point<int> (10, 70, 0), Point<int> (50, 160, 0), Point<int> (70,80,0)};
-    Point<int> t1[3] = {Point<int> (180, 50, 0), Point<int> (150, 1, 0), Point<int> (70,180,0)};
-    Point<int> t2[3] = {Point<int> (180, 150, 0), Point<int> (120, 160, 0), Point<int> (130,180,0)};
+    Point<int> t0[3] = {Point<int> (10, 70, 10), Point<int> (50, 160, 10), Point<int> (70,80,10)};
+    Point<int> t1[3] = {Point<int> (180, 50, 10), Point<int> (150, 1, 10), Point<int> (70,180,10)};
+    Point<int> t2[3] = {Point<int> (180, 150, 10), Point<int> (120, 160, 10), Point<int> (130,180,10)};
     unsigned char off = 0;
     clock_t start = clock();
     for(int i = 0; ; i++) {
@@ -39,9 +39,13 @@ int main() {
         }
         frame.fill(Color::Black);
 
-        frame.draw_triangle(t0[0], t0[1], t0[2], Color::Red);
-        frame.draw_triangle(t1[0], t1[1], t1[2], Color::White);
-        frame.draw_triangle(t2[0], t2[1], t2[2], Color::Green);
+        Point<int> t[3] = {Point<int> (0, 0, 0), Point<int> (0, 20, 0), Point<int> (20,0,0)};
+        Point<int> tt[3] = {Point<int> (0, 0, 1), Point<int> (20, 20, -1), Point<int> (20,0,-1)};
+        frame.draw_triangle(t[0], t[1], t[2], Color::Red);
+        frame.draw_triangle(tt[0], tt[1], tt[2], Color::Blue);
+        //frame.draw_triangle(t0[0], t0[1], t0[2], Color::Red);
+        //frame.draw_triangle(t1[0], t1[1], t1[2], Color::White);
+        //frame.draw_triangle(t2[0], t2[1], t2[2], Color::Green);
         //frame.draw_line(13, 20, 80, 40, Color::Black);
         //frame.draw_line(20, 13, 40, 80, Color::Red);
         //frame.draw_line(80, 40, 13, 20, Color::Red);
@@ -50,7 +54,7 @@ int main() {
         //frame.draw_line(130, 75, 100, 50, Color::Blue);
         //frame.draw_line(100, 50, 50, 50, Color::Blue);
         //frame.draw_line(80, 75, 100, 50, Color::Blue);
-        o.draw(frame, Point<float>(0, std::sin(i/10.), std::cos(i/10.)));
+        o.draw(frame, Point<float>(0,0,1));
         w.update();
         if (i % 10 == 0) {
             clock_t end = clock();

@@ -4,9 +4,11 @@
 #include <string.h>
 #include <stdio.h>
 #include <cstdlib>
+#include <limits>
 
 Framebuffer::Framebuffer(X11Display& display, int width, int height) {
     buf = (uint32_t*) malloc(width*height<<2);
+    zbuf = (int*) malloc(width*height<<2);
     _width = width;
     _height = height;
     _dpy = display.ptr();
@@ -25,6 +27,7 @@ void Framebuffer::resize(int width, int height) {
     }
 
     buf = (uint32_t*) realloc(buf, width*height<<2);
+    zbuf = (int*) realloc(zbuf, width*height<<2);
     _width = width;
     _height = height;
     XFree(_image);
@@ -56,6 +59,7 @@ void Framebuffer::fill(Color& c) {
     for (int i = 0; i < _height; i++) {
         for (int j = 0; j < _width; j++) {
             buf[i*_width+j] = c.r << 16 | c.g << 8 | c.b;
+            zbuf[i*_width+j] = std::numeric_limits<int>::max();
         }
     }
 }
@@ -89,16 +93,22 @@ void Framebuffer::draw_triangle(const Point<int>& v0, const Point<int>& v1, cons
     maxy = std::max(v0.y, maxy);
     maxy = std::max(v1.y, maxy);
     maxy = std::max(v2.y, maxy);
-    maxy = std::min(_width-1, maxy);
+    maxy = std::min(_height-1, maxy);
 
     for (int x = minx; x <= maxx; x++) {
         for (int y = miny; y <= maxy; y++) {
-            bool inside = true;
-            inside &= edgeFunction(v0,v1,Point<int>(x,y,0)) >= 0;
-            inside &= edgeFunction(v1,v2,Point<int>(x,y,0)) >= 0;
-            inside &= edgeFunction(v2,v0,Point<int>(x,y,0)) >= 0;
-            if (inside)
-                set_pixel(x,y,c);
+            int w0 = edgeFunction(v1,v2,Point<int>(x,y,0));
+            int w1 = edgeFunction(v2,v0,Point<int>(x,y,0));
+            int w2 = edgeFunction(v0,v1,Point<int>(x,y,0));
+            bool inside = w0>=0 && w1>=0 && w2>=0;
+            if (inside) {
+                int z = v0.z * w0 + v1.z*w1 + v2.z*w2;
+                if (z < zbuf[y*_width+x]) {
+                    //printf("%d %d %d\n", x, y, z);
+                    zbuf[y*_width+x] = z;
+                    set_pixel(x,y,c);
+                }
+            }
 
         }
     }

@@ -11,12 +11,12 @@ Obj::Obj(const char * filename) {
     while (!in.eof()) {
         std::getline(in, line);
         std::istringstream ss(line.c_str());
-        char command;
+        char command = '\0';
         ss >> command;
         if (command == 'v') {
             float x, y, z;
             ss >> x >> y >> z;
-            Point<float> p(x, y, z);
+            Point<float> p(x, -y, z);
             verts.push_back(p);
         } else if (command == 'f') { 
             std::vector<int> f;
@@ -59,7 +59,7 @@ void Obj::draw(Framebuffer& f, const Point<float> lightVec) {
         float intensity = n*lightVec;
         if (intensity > 0) {
             uint8_t c = intensity*255;
-            f.draw_triangle((v0+Point<float>(1.,1.,0))*200, (v1+Point<float>(1.,1.,0))*200, (v2+Point<float>(1.,1.,0))*200, Color(c,c,c)); 
+            f.draw_triangle((v0+Point<float>(1.,1.,0))*300, (v1+Point<float>(1.,1.,0))*300, (v2+Point<float>(1.,1.,0))*300, Color(c,c,c)); 
         }
 
     }

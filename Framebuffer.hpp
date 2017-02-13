@@ -34,6 +34,7 @@ private:
     int _width;
     int _height;
     uint32_t* buf;
+    int* zbuf;
     XImage* _image;
     Display* _dpy;
 };
