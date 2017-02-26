@@ -77,11 +77,11 @@ public:
         return ret;
     }
 
-    static Transform scale(float s) {
+    static Transform scale(float sx, float sy, float sz) {
         Transform ret = identity();
-        ret.m[0][0] = s;
-        ret.m[1][1] = s;
-        ret.m[2][2] = s;
+        ret.m[0][0] = sx;
+        ret.m[1][1] = sy;
+        ret.m[2][2] = sz;
         return ret;
     }
 

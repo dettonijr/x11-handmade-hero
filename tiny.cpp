@@ -9,8 +9,8 @@
 const float  PI_F=3.14159265358979f;
 
 int main() {
+    //Obj o("/mnt/c/Users/sauron/Documents/untitled.obj");
     Obj o("../african_head.obj");
-
     Point<float> p(1,1,1);
     Transform t = Transform::translate(1.,1.,0)*Transform::rotX(PI_F/2);
     auto p2 = p*t;
@@ -29,9 +29,9 @@ int main() {
     Framebuffer& frame = w.get_framebuffer();
 
     XEvent ev;
-    Point<int> t0[3] = {Point<int> (10, 70, 10), Point<int> (50, 160, 10), Point<int> (70,80,10)};
-    Point<int> t1[3] = {Point<int> (180, 50, 10), Point<int> (150, 1, 10), Point<int> (70,180,10)};
-    Point<int> t2[3] = {Point<int> (180, 150, 10), Point<int> (120, 160, 10), Point<int> (130,180,10)};
+    Point<float> t0[3] = {Point<float> (10, 70, 10), Point<float> (50, 160, 10), Point<float> (70,80,10)};
+    Point<float> t1[3] = {Point<float> (180, 50, 10), Point<float> (150, 1, 10), Point<float> (70,180,10)};
+    Point<float> t2[3] = {Point<float> (180, 150, 10), Point<float> (120, 160, 10), Point<float> (130,180,10)};
     unsigned char off = 0;
     clock_t start = clock();
     for(int i = 0; ; i++) {
@@ -45,11 +45,11 @@ int main() {
         }
         frame.fill(Color::Black);
 
-        Point<int> t[3] = {Point<int> (0, 0, -1), Point<int> (0, 50, -1), Point<int> (50,0,1)};
+        Point<float> t[3] = {Point<float> (0, 0, -100), Point<float> (0, 50, -100), Point<float> (50,0,100)};
         int off = 50.0*std::sin(i/30.);
-        Point<int> tt[3] = {Point<int> (off, 0, 0), Point<int> (50+off, 50, 0), Point<int> (50+off,0,0)};
-        frame.draw_triangle(t[0], t[1], t[2], Color::Red);
+        Point<float> tt[3] = {Point<float> (off, 0, 0), Point<float> (50+off, 50, 0), Point<float> (50+off,0,0)};
         frame.draw_triangle(tt[0], tt[1], tt[2], Color::Blue);
+        frame.draw_triangle(t[0], t[1], t[2], Color::Red);
         //frame.draw_triangle(t0[0], t0[1], t0[2], Color::Red);
         //frame.draw_triangle(t1[0], t1[1], t1[2], Color::White);
         //frame.draw_triangle(t2[0], t2[1], t2[2], Color::Green);
@@ -61,7 +61,7 @@ int main() {
         //frame.draw_line(130, 75, 100, 50, Color::Blue);
         //frame.draw_line(100, 50, 50, 50, Color::Blue);
         //frame.draw_line(80, 75, 100, 50, Color::Blue);
-        Transform tr = Transform::scale(300) * Transform::translate(1.,1.,0) * Transform::rotY(i*0.01);
+        Transform tr = Transform::scale(300,300,300) * Transform::translate(1.,1.,0) * Transform::scale(1.,-1.,1.) * Transform::rotY(i*0.05);
         o.draw(frame, Point<float>(0,0,1), tr);
         w.update();
         if (i % 10 == 0) {
