@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "Color.h"
 #include "Point.h"
+#include "TGAFile.hpp"
 class X11Display;
 
 class Framebuffer {
@@ -19,6 +20,7 @@ public:
     void fill(Color& c);
 
     void draw_triangle(const Point<float>& v0, const Point<float>& v1, const Point<float>& v2, const Color& c);
+    void draw_triangle(const Point<float>& v0, const Point<float>& v1, const Point<float>& v2, const Point<float>& t0, const Point<float>& t1, const Point<float>& t2, const TGAFile& texture, float intensity);
     void draw_triangle(const Point<int>& v0, const Point<int>& v1, const Point<int>& v2, const Color& c);
 
     void draw_line(const Point<float>& p0, const Point<float>& p1, const Color& c);

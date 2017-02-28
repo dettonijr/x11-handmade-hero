@@ -118,6 +118,57 @@ void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, 
     }
 }
 
+void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, const Point<float>& v2, const Point<float>& t0, const Point<float>& t1, const Point<float>& t2, const TGAFile& texture, float intensity) {
+    int minx = _width-1;
+    int maxx = 0;
+    int miny = _height-1;
+    int maxy = 0;
+
+    minx = std::min(F2I(v0.x), minx);
+    minx = std::min(F2I(v1.x), minx);
+    minx = std::min(F2I(v2.x), minx);
+    minx = std::max(0, minx);
+    miny = std::min(F2I(v0.y), miny);
+    miny = std::min(F2I(v1.y), miny);
+    miny = std::min(F2I(v2.y), miny);
+    miny = std::max(0, miny);
+    maxx = std::max(F2I(v0.x), maxx);
+    maxx = std::max(F2I(v1.x), maxx);
+    maxx = std::max(F2I(v2.x), maxx);
+    maxx = std::min(_width-1, maxx);
+    maxy = std::max(F2I(v0.y), maxy);
+    maxy = std::max(F2I(v1.y), maxy);
+    maxy = std::max(F2I(v2.y), maxy);
+    maxy = std::min(_height-1, maxy);
+
+    for (int y = miny; y <= maxy; y++) {
+        for (int x = minx; x <= maxx; x++) {
+            float w0 = edgeFunction(v1,v2,Point<float>(I2F(x),I2F(y),0));
+            float w1 = edgeFunction(v2,v0,Point<float>(I2F(x),I2F(y),0));
+            float w2 = edgeFunction(v0,v1,Point<float>(I2F(x),I2F(y),0));
+            bool inside = w0>=0 && w1>=0 && w2>=0;
+            float area = edgeFunction(v0,v1,v2);
+            w0 /= area;
+            w1 /= area;
+            w2 /= area;
+            if (inside) {
+                float z = v0.z * w0 + v1.z*w1 + v2.z*w2;
+                if (z < zbuf[y*_width+x]) {
+                    //printf("%d %d %d\n", x, y, z);
+                    zbuf[y*_width+x] = z;
+                
+                    float tx = t0.x * w0 + t1.x*w1 + t2.x*w2;
+                    float ty = t0.y * w0 + t1.y*w1 + t2.y*w2;
+ 
+                    set_pixel(x,y,texture.get_color(tx,ty)*intensity);
+                }
+            }
+
+        }
+    }
+
+}
+
 void Framebuffer::draw_line(const Point<float>& p0, const Point<float>& p1, const Color& c) {
     draw_line(Point<int>(p0.x,p0.y,p0.z), Point<int>(p1.x,p1.y,p1.z), c);
 }

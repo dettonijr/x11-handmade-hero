@@ -1,5 +1,9 @@
+#ifndef _COLOR_H_
+#define _COLOR_H_
+
 #include <cstdint>
 #include <random>
+#include <cassert>
 
 struct Color {
     uint8_t r, g, b;
@@ -10,6 +14,11 @@ struct Color {
     ~Color() { 
     }
 
+    Color operator*(float c) {
+        assert(c >= 0.0 && c <= 1.0);
+        return Color(r*c, g*c, b*c);
+    }
+    
     static Color random() {
         return Color(std::rand(), std::rand(), std::rand()); 
     }
@@ -20,3 +29,5 @@ struct Color {
     static Color Green;
     static Color Blue;
 };
+
+#endif

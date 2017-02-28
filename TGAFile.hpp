@@ -1,6 +1,10 @@
+#ifndef _TGAFILE_H_
+#define _TGAFILE_H_
+
 #include <cstdint>
 #include <vector>
 #include <string>
+#include "Color.h"
 
 struct TGAFile {
 #pragma pack(push,1)
@@ -23,4 +27,7 @@ struct TGAFile {
     std::vector<std::uint32_t> data;
 
     TGAFile(const char* file);
+    Color get_color(float x, float y) const;
 };
+
+#endif

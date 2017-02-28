@@ -31,3 +31,12 @@ TGAFile::TGAFile(const char* file) {
     }
 } 
 
+Color TGAFile::get_color(float x, float y) const {
+    assert(x >= 0.0 && x <= 1.0);
+    assert(y >= 0.0 && y <= 1.0);
+    std::size_t sx = x*header.width;
+    std::size_t sy = y*header.height;
+    std::uint32_t c = data[sx+sy*header.width];
+
+    return Color(c>>16&0xff, c>>8&0xff, c&0xff);
+}
