@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <limits>
+#include "Util.h"
 
 #define I2F(x) ((float)x+0.5)
 #define F2I(x) ((int)x)
@@ -67,11 +68,6 @@ void Framebuffer::fill(Color& c) {
     }
 }
 
-float edgeFunction(const Point<float>& v0, const Point<float>& v1, const Point<float>& p) {
-    return (p.x-v0.x)*(v1.y-v0.y) - (p.y-v0.y)*(v1.x-v0.x);
-}
-
-    
 void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, const Point<float>& v2, const Color& c) {
     int minx = _width-1;
     int maxx = 0;
@@ -101,10 +97,6 @@ void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, 
             float w1 = edgeFunction(v2,v0,Point<float>(I2F(x),I2F(y),0));
             float w2 = edgeFunction(v0,v1,Point<float>(I2F(x),I2F(y),0));
             bool inside = w0>=0 && w1>=0 && w2>=0;
-            float area = edgeFunction(v0,v1,v2);
-            w0 /= area;
-            w1 /= area;
-            w2 /= area;
             if (inside) {
                 float z = v0.z * w0 + v1.z*w1 + v2.z*w2;
                 if (z < zbuf[y*_width+x]) {
@@ -118,7 +110,7 @@ void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, 
     }
 }
 
-void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, const Point<float>& v2, const Point<float>& t0, const Point<float>& t1, const Point<float>& t2, const TGAFile& texture, float intensity) {
+void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, const Point<float>& v2, FragmentShader& shader) {
     int minx = _width-1;
     int maxx = 0;
     int miny = _height-1;
@@ -156,11 +148,7 @@ void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, 
                 if (z < zbuf[y*_width+x]) {
                     //printf("%d %d %d\n", x, y, z);
                     zbuf[y*_width+x] = z;
-                
-                    float tx = t0.x * w0 + t1.x*w1 + t2.x*w2;
-                    float ty = t0.y * w0 + t1.y*w1 + t2.y*w2;
- 
-                    set_pixel(x,y,texture.get_color(tx,ty)*intensity);
+                    set_pixel(x,y,shader.fragment(x,y));
                 }
             }
 
