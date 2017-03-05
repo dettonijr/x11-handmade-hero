@@ -24,13 +24,13 @@ Obj::Obj(const char * filename, const char* texture_file) : texture(texture_file
             Point<float> p(x, y, z);
             texture_points.push_back(p);
         } else if (command == "f") { 
-            std::vector<int> f;
-            std::vector<int> ftexture;
+            std::array<uint32_t, 3> f;
+            std::array<uint32_t, 3> ftexture;
             int idx;
             int idxtexture;
             char trash;
             int itrash;
-
+            uint32_t currFaceComponent = 0;
             while(ss >> idx) {
                 ss >> trash;
                 ss >> idxtexture;
@@ -38,8 +38,9 @@ Obj::Obj(const char * filename, const char* texture_file) : texture(texture_file
                 ss >> itrash;
                 idx--;
                 idxtexture--;
-                f.push_back(idx);
-                ftexture.push_back(idxtexture);
+                f[currFaceComponent] = idx;
+                ftexture[currFaceComponent] = idxtexture;
+                ++currFaceComponent;
             }
             faces.push_back(f);
             faces_texture.push_back(ftexture);
@@ -52,13 +53,13 @@ Obj::~Obj()
 
 }
    
-void Obj::draw(Framebuffer& f, const Point<float> lightVec, const Transform& t) {
+void Obj::draw(Framebuffer& f, const Point<float>& lightVec, const Transform& t) {
     int width = f.width();
     int height = f.height();
     
     for (int i = 0; i < faces.size(); i++) {
-        std::vector<int> face = faces[i];
-        std::vector<int> face_texture = faces_texture[i];
+        auto face = faces[i];
+        auto face_texture = faces_texture[i];
         Point<float>& v0 = verts[face[0]];
         Point<float>& v1 = verts[face[1]];
         Point<float>& v2 = verts[face[2]];
@@ -77,9 +78,9 @@ void Obj::draw(Framebuffer& f, const Point<float> lightVec, const Transform& t) 
         float ny = a.z*b.x - a.x*b.z; 
         float nz = a.x*b.y - a.y*b.x; 
 
-        Point<float> n(nx,ny,nz);
-        n.normalize();
-        float intensity = n*lightVec;
+        const Point<float> n(nx,ny,nz);
+        const Point<float> normalized = n.normalize();
+        float intensity = normalized*lightVec;
 
         if (intensity > 0) {
             //TextureShader s{p0, p1, p2, t0, t1, t2, intensity, texture};

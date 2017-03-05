@@ -9,9 +9,11 @@
 class Transform;
 
 template<typename T>
-class Point {
+class Point final {
 public:
-    T x, y, z;
+    const T x;
+    const T y;
+    const T z;
 
     Point(T x0, T y0, T z0) : x(x0), y(y0), z(z0) {
     }
@@ -19,31 +21,31 @@ public:
     ~Point() { 
     }
 
-    Point<T> operator-(const Point<T>& o) {
+    Point<T> operator-(const Point<T>& o) const {
         return Point<T>(x-o.x, y-o.y, z-o.z);
     }
     
-    Point<T> operator+(const Point<T>& o) {
+    Point<T> operator+(const Point<T>& o) const {
         return Point<T>(x+o.x, y+o.y, z+o.z);
     }
     
-    Point<T> operator*(float c) {
+    Point<T> operator*(T c) const {
         return Point<T>(x*c, y*c, z*c);
     }
     
-    T operator*(const Point<T>& o) {
+    T operator*(const Point<T>& o) const {
         return x*o.x + y*o.y + z*o.z;
     }
 
-    float norm() { 
+    T norm() const{ 
         return std::sqrt(x*x + y*y + z*z); 
     }
-
-    void normalize(T len = 1) {
-        *this = (*this)*(1/norm());
-    }
     
-    Point<T> operator*(const Transform& a) {
+    Point<T> normalize() const {
+        return (*this)*(1.0/norm()); 
+    }
+
+    Point<T> operator*(const Transform& a) const {
         return a*(*this); 
     }
 };
