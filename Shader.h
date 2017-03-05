@@ -8,19 +8,19 @@
 float edgeFunction(const Point<float>& v0, const Point<float>& v1, const Point<float>& p);
 
 struct FragmentShader {
-    virtual ~FragmentShader() {};
-    virtual Color fragment(int x, int y) = 0;
+    virtual ~FragmentShader() {}
+    virtual Color fragment(int x, int y) const = 0;
 };
 
-struct TextureShader : FragmentShader {
-    Point<float>& v0;        
-    Point<float>& v1;        
-    Point<float>& v2;        
-    Point<float>& t0;        
-    Point<float>& t1;        
-    Point<float>& t2;        
-    float intensity;
-    TGAFile& texture;     
+struct TextureShader final : FragmentShader {
+    const Point<float>& v0;        
+    const Point<float>& v1;        
+    const Point<float>& v2;        
+    const Point<float>& t0;        
+    const Point<float>& t1;        
+    const Point<float>& t2;        
+    const float intensity;
+    const TGAFile& texture;     
 
     TextureShader(
         Point<float>& _v0,        
@@ -42,11 +42,11 @@ struct TextureShader : FragmentShader {
     {
     }
 
-    virtual ~TextureShader() {
+    ~TextureShader() {
 
     }
 
-    virtual Color fragment(int x, int y) {
+    Color fragment(int x, int y) const override {
         float w0 = edgeFunction(v1,v2,Point<float>(I2F(x),I2F(y),0));
         float w1 = edgeFunction(v2,v0,Point<float>(I2F(x),I2F(y),0));
         float w2 = edgeFunction(v0,v1,Point<float>(I2F(x),I2F(y),0));
@@ -62,18 +62,18 @@ struct TextureShader : FragmentShader {
     }
 };
 
-struct FlatShader : FragmentShader {
-    Color& c;     
+struct FlatShader final: FragmentShader {
+    const Color c;     
 
     FlatShader(Color& c): c(c)
     {
     }
 
-    virtual ~FlatShader() {
+    ~FlatShader() {
 
     }
 
-    virtual Color fragment(int x, int y) {
+    Color fragment(int x, int y) const override {
         return c;
     }
 };
