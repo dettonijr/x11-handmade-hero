@@ -15,7 +15,7 @@ public:
     ~Framebuffer();
 
     void resize(int width, int height);
-    uint32_t* get_raw_buffer();
+    std::vector<uint32_t>& get_raw_buffer();
 
     void set_pixel(int x, int y, const Color& c);
     void fill(Color& c);
@@ -36,8 +36,8 @@ public:
 private:
     int _width;
     int _height;
-    uint32_t* buf;
-    float* zbuf;
+    std::vector<uint32_t> buf;
+    std::vector<float> zbuf;
     XImage* _image;
     Display* _dpy;
 };

@@ -32,7 +32,7 @@ int main() {
                 w.resize(xce.width, xce.height);
             }   
         }
-        memcpy(frame.get_raw_buffer(), &f.data[0], 4*1024*1024);
+        std::copy(f.data.begin(), f.data.end(), frame.get_raw_buffer().begin());
         w.update();
         if (i % 100 == 0) {
             clock_t end = clock();

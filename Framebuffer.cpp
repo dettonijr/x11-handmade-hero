@@ -10,17 +10,11 @@
 #define I2F(x) ((float)x+0.5)
 #define F2I(x) ((int)x)
 
-Framebuffer::Framebuffer(X11Display& display, int width, int height) {
-    buf = (uint32_t*) malloc(width*height<<2);
-    zbuf = (float*) malloc(width*height<<2);
-    _width = width;
-    _height = height;
-    _dpy = display.ptr();
-    _image = XCreateImage(_dpy, DefaultVisual(_dpy, DefaultScreen(_dpy)), DefaultDepth(_dpy, DefaultScreen(_dpy)), ZPixmap, 0, (char*) buf, _width, _height, 8, 0);
+Framebuffer::Framebuffer(X11Display& display, int width, int height) : _dpy(display.ptr()), _image(NULL)  {
+    resize(width, height);
 }
 
 Framebuffer::~Framebuffer() {
-    free(buf);
     XFree(_image);
 }
 
@@ -30,15 +24,16 @@ void Framebuffer::resize(int width, int height) {
         return;
     }
 
-    buf = (uint32_t*) realloc(buf, width*height<<2);
-    zbuf = (float*) realloc(zbuf, width*height<<2);
+    buf.resize(width*height*2);
+    zbuf.resize(width*height*2);
     _width = width;
     _height = height;
-    XFree(_image);
-    _image = XCreateImage(_dpy, DefaultVisual(_dpy, DefaultScreen(_dpy)), DefaultDepth(_dpy, DefaultScreen(_dpy)), ZPixmap, 0, (char*) buf, _width, _height, 8, 0);
+    if (_image != NULL) 
+        XFree(_image);
+    _image = XCreateImage(_dpy, DefaultVisual(_dpy, DefaultScreen(_dpy)), DefaultDepth(_dpy, DefaultScreen(_dpy)), ZPixmap, 0, (char*) &buf[0], _width, _height, 8, 0);
 }
 
-uint32_t* Framebuffer::get_raw_buffer() {
+std::vector<uint32_t>& Framebuffer::get_raw_buffer() {
     return buf;
 }
 
@@ -222,7 +217,7 @@ void Framebuffer::draw_rect(int minx, int miny, int maxx, int maxy, Color& c) {
     uint32_t color = c.r << 16 | c.g << 8 << c.b;
 
     for (int y = miny; y < maxy; y++) {
-        uint32_t* pixelstart = buf + y*_width + minx;
+        uint32_t* pixelstart = &buf[y*_width] + minx;
         uint32_t* pixelend = pixelstart + maxx - minx;
         while (pixelstart < pixelend) {
              *pixelstart++ = color;

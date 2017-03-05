@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 void write_color_to_pixmap(Framebuffer& f, int width, int height, unsigned char offset) {
-    uint32_t* bitmap = f.get_raw_buffer();
+    auto& bitmap = f.get_raw_buffer();
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             uint8_t green = i << 2; 

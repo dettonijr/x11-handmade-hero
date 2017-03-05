@@ -65,7 +65,7 @@ struct TextureShader final : FragmentShader {
 struct FlatShader final: FragmentShader {
     const Color c;     
 
-    FlatShader(Color& c): c(c)
+    FlatShader(const Color& c): c(c)
     {
     }
 

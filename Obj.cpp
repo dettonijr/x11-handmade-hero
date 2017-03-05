@@ -56,7 +56,7 @@ Obj::~Obj()
 void Obj::draw(Framebuffer& f, const Point<float>& lightVec, const Transform& t) {
     int width = f.width();
     int height = f.height();
-    
+
     for (int i = 0; i < faces.size(); i++) {
         auto face = faces[i];
         auto face_texture = faces_texture[i];
@@ -83,9 +83,8 @@ void Obj::draw(Framebuffer& f, const Point<float>& lightVec, const Transform& t)
         float intensity = normalized*lightVec;
 
         if (intensity > 0) {
-            //TextureShader s{p0, p1, p2, t0, t1, t2, intensity, texture};
-            Color c = Color::White*intensity;
-            FlatShader s{c};
+            TextureShader s{p0, p1, p2, t0, t1, t2, intensity, texture};
+            //FlatShader s{Color::White*intensity};
             f.draw_triangle(p0, p1, p2, s); 
         }
 
