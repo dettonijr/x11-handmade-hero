@@ -6,9 +6,12 @@
 #include <cassert>
 
 struct Color final{
-    const uint8_t r;
-    const uint8_t g;
-    const uint8_t b;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    
+    Color() : r(0), g(0), b(0) {
+    }
 
     Color(uint8_t r0, uint8_t g0, uint8_t b0) : r(r0), g(g0), b(b0) {
     }

@@ -9,7 +9,7 @@ float edgeFunction(const Point<float>& v0, const Point<float>& v1, const Point<f
 
 struct FragmentShader {
     virtual ~FragmentShader() {}
-    virtual Color fragment(int x, int y) const = 0;
+    virtual bool fragment(int x, int y, float& outZ, Color& outColor) const = 0;
 };
 
 struct TextureShader final : FragmentShader {
@@ -46,10 +46,12 @@ struct TextureShader final : FragmentShader {
 
     }
 
-    Color fragment(int x, int y) const override {
+    bool fragment(int x, int y, float& outZ, Color& outColor) const override {
         float w0 = edgeFunction(v1,v2,Point<float>(I2F(x),I2F(y),0));
         float w1 = edgeFunction(v2,v0,Point<float>(I2F(x),I2F(y),0));
         float w2 = edgeFunction(v0,v1,Point<float>(I2F(x),I2F(y),0));
+        if (w0 < 0 | w1 < 0 | w2 < 0)
+            return true;
         float area = edgeFunction(v0,v1,v2);
         w0 /= area;
         w1 /= area;
@@ -57,15 +59,29 @@ struct TextureShader final : FragmentShader {
          
         float tx = t0.x * w0 + t1.x*w1 + t2.x*w2;
         float ty = t0.y * w0 + t1.y*w1 + t2.y*w2;
- 
-        return texture.get_color(tx,ty)*intensity;
+        
+        outZ = v0.z * w0 + v1.z*w1 + v2.z*w2;
+        outColor = texture.get_color(tx,ty)*intensity;
+        return false;
     }
 };
 
 struct FlatShader final: FragmentShader {
     const Color c;     
+    const Point<float>& v0;        
+    const Point<float>& v1;        
+    const Point<float>& v2;        
 
-    FlatShader(const Color& c): c(c)
+    FlatShader(
+        const Point<float>& v0,        
+        const Point<float>& v1,        
+        const Point<float>& v2,
+        const Color& c
+    ) :
+        v0(v0), 
+        v1(v1),        
+        v2(v2),       
+        c(c)
     {
     }
 
@@ -73,7 +89,19 @@ struct FlatShader final: FragmentShader {
 
     }
 
-    Color fragment(int x, int y) const override {
-        return c;
+    bool fragment(int x, int y, float& outZ, Color& outColor) const override {
+        float w0 = edgeFunction(v1,v2,Point<float>(I2F(x),I2F(y),0));
+        float w1 = edgeFunction(v2,v0,Point<float>(I2F(x),I2F(y),0));
+        float w2 = edgeFunction(v0,v1,Point<float>(I2F(x),I2F(y),0));
+        if (w0 < 0 | w1 < 0 | w2 < 0)
+            return true;
+        float area = edgeFunction(v0,v1,v2);
+        w0 /= area;
+        w1 /= area;
+        w2 /= area;
+        
+        outZ = v0.z * w0 + v1.z*w1 + v2.z*w2;
+        outColor = c;
+        return false;
     }
 };

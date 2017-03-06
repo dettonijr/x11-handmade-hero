@@ -83,8 +83,8 @@ void Obj::draw(Framebuffer& f, const Point<float>& lightVec, const Transform& t)
         float intensity = normalized*lightVec;
 
         if (intensity > 0) {
-            TextureShader s{p0, p1, p2, t0, t1, t2, intensity, texture};
-            //FlatShader s{Color::White*intensity};
+            //TextureShader s{p0, p1, p2, t0, t1, t2, intensity, texture};
+            FlatShader s{p0, p1, p2, Color::White*intensity};
             f.draw_triangle(p0, p1, p2, s); 
         }
 

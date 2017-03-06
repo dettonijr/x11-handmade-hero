@@ -130,23 +130,13 @@ void Framebuffer::draw_triangle(const Point<float>& v0, const Point<float>& v1, 
 
     for (int y = miny; y <= maxy; y++) {
         for (int x = minx; x <= maxx; x++) {
-            float w0 = edgeFunction(v1,v2,Point<float>(I2F(x),I2F(y),0));
-            float w1 = edgeFunction(v2,v0,Point<float>(I2F(x),I2F(y),0));
-            float w2 = edgeFunction(v0,v1,Point<float>(I2F(x),I2F(y),0));
-            bool inside = w0>=0 && w1>=0 && w2>=0;
-            float area = edgeFunction(v0,v1,v2);
-            w0 /= area;
-            w1 /= area;
-            w2 /= area;
-            if (inside) {
-                float z = v0.z * w0 + v1.z*w1 + v2.z*w2;
-                if (z < zbuf[y*_width+x]) {
-                    //printf("%d %d %d\n", x, y, z);
-                    zbuf[y*_width+x] = z;
-                    set_pixel(x,y,shader.fragment(x,y));
-                }
+            float z;
+            Color c;
+            bool discard = shader.fragment(x, y, z, c);
+            if (!discard && z < zbuf[y*_width+x]) {
+                zbuf[y*_width+x] = z;
+                set_pixel(x,y,c);
             }
-
         }
     }
 
