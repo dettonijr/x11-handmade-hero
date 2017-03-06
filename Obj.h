@@ -5,6 +5,16 @@
 #include "TGAFile.hpp"
 
 class Obj final{
+
+    struct Vertex {
+        Vertex(TGAFile& texture) : texture(texture) {
+        }
+
+        std::array<Point<float>, 3> v;
+        std::array<Point<float>, 3> vt;
+        TGAFile& texture;
+    };
+
 public:
     Obj(const char * filename, const char* texture_file);
     ~Obj();
@@ -12,8 +22,5 @@ public:
 
 private:
     TGAFile texture;
-    std::vector<Point<float>> verts;
-    std::vector<Point<float>> texture_points;
-    std::vector<std::array<uint32_t, 3>> faces;
-    std::vector<std::array<uint32_t, 3>> faces_texture;
+    std::vector<Vertex> faces;
 };

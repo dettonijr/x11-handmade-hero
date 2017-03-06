@@ -6,6 +6,9 @@
 
 Obj::Obj(const char * filename, const char* texture_file) : texture(texture_file) {
     std::ifstream in(filename, std::ifstream::in);
+    
+    std::vector<Point<float>> verts;
+    std::vector<Point<float>> texture_points;
 
     std::string line;
     while (!in.eof()) {
@@ -24,8 +27,7 @@ Obj::Obj(const char * filename, const char* texture_file) : texture(texture_file
             Point<float> p(x, y, z);
             texture_points.push_back(p);
         } else if (command == "f") { 
-            std::array<uint32_t, 3> f;
-            std::array<uint32_t, 3> ftexture;
+            Vertex vertex(texture);
             int idx;
             int idxtexture;
             char trash;
@@ -38,12 +40,11 @@ Obj::Obj(const char * filename, const char* texture_file) : texture(texture_file
                 ss >> itrash;
                 idx--;
                 idxtexture--;
-                f[currFaceComponent] = idx;
-                ftexture[currFaceComponent] = idxtexture;
+                vertex.v[currFaceComponent] = verts[idx];
+                vertex.vt[currFaceComponent] = texture_points[idxtexture];
                 ++currFaceComponent;
             }
-            faces.push_back(f);
-            faces_texture.push_back(ftexture);
+            faces.push_back(vertex);
         }
     }
 }
@@ -59,13 +60,12 @@ void Obj::draw(Framebuffer& f, const Point<float>& lightVec, const Transform& t)
 
     for (int i = 0; i < faces.size(); i++) {
         auto face = faces[i];
-        auto face_texture = faces_texture[i];
-        Point<float>& v0 = verts[face[0]];
-        Point<float>& v1 = verts[face[1]];
-        Point<float>& v2 = verts[face[2]];
-        Point<float>& t0 = texture_points[face_texture[0]];
-        Point<float>& t1 = texture_points[face_texture[1]];
-        Point<float>& t2 = texture_points[face_texture[2]];
+        Point<float>& v0 = face.v[0];
+        Point<float>& v1 = face.v[1];
+        Point<float>& v2 = face.v[2];
+        Point<float>& t0 = face.vt[0];
+        Point<float>& t1 = face.vt[1];
+        Point<float>& t2 = face.vt[2];
         
         Point<float> p0 = v0*t;
         Point<float> p1 = v1*t;

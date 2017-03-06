@@ -11,16 +11,19 @@ class Transform;
 template<typename T>
 class Point final {
 public:
-    const T x;
-    const T y;
-    const T z;
+    T x;
+    T y;
+    T z;
+    
+    Point() : x(0), y(0), z(0) {
+    }
 
     Point(T x0, T y0, T z0) : x(x0), y(y0), z(z0) {
     }
 
     ~Point() { 
     }
-
+    
     Point<T> operator-(const Point<T>& o) const {
         return Point<T>(x-o.x, y-o.y, z-o.z);
     }

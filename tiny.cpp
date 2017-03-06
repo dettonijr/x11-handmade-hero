@@ -70,7 +70,6 @@ int main() {
             start = clock();
             printf("FPS: %d\n", (int)(10000000/micros));
         }
-        usleep(3000);
     } 
 
     return(0);
