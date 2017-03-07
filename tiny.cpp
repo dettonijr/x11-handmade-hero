@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "Obj.h"
 #include <cmath>
+#include "Renderer.h"
 
 const float  PI_F=3.14159265358979f;
 
@@ -26,6 +27,9 @@ int main() {
                   ExposureMask |
                   StructureNotifyMask);
 
+    Renderer r;
+    r.add_obj(o);
+    r.set_light(Point<float>(0,0,1));
     Framebuffer& frame = w.get_framebuffer();
 
     XEvent ev;
@@ -62,7 +66,7 @@ int main() {
         //frame.draw_line(100, 50, 50, 50, Color::Blue);
         //frame.draw_line(80, 75, 100, 50, Color::Blue);
         Transform tr = Transform::scale(300,300,300) * Transform::translate(1.,1.,0) * Transform::rotZ(PI_F) * Transform::rotY(i*0.05);
-        o.draw(frame, Point<float>(0,0,1), tr);
+        r.render(frame, tr);
         w.update();
         if (i % 10 == 0) {
             clock_t end = clock();

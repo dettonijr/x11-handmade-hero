@@ -1,3 +1,5 @@
+#ifndef _OBJ_H_
+#define _OBJ_H_
 #include "Point.h"
 #include <vector>
 #include <array>
@@ -18,9 +20,14 @@ class Obj final{
 public:
     Obj(const char * filename, const char* texture_file);
     ~Obj();
-    void draw(Framebuffer& f, const Point<float>& light_vec, const Transform& t);    
+
+    const std::vector<Vertex>& get_faces() {
+        return faces;
+    }
 
 private:
     TGAFile texture;
     std::vector<Vertex> faces;
 };
+
+#endif
