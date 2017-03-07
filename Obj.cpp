@@ -53,4 +53,12 @@ Obj::~Obj()
 {
 
 }
+
+void Obj::transform(const Transform& f) {
+    for (auto face = faces.begin(); face != faces.end(); face++) {
+        face->v[0] = f*face->v[0];
+        face->v[1] = f*face->v[1];
+        face->v[2] = f*face->v[2];
+    }
+}
    

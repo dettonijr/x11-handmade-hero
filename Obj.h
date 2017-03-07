@@ -21,6 +21,8 @@ public:
     Obj(const char * filename, const char* texture_file);
     ~Obj();
 
+    void transform(const Transform& f);
+
     const std::vector<Vertex>& get_faces() {
         return faces;
     }

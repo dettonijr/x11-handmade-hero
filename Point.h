@@ -48,7 +48,7 @@ public:
         return (*this)*(1.0/norm()); 
     }
 
-    Point<T> operator*(const Transform& a) const {
+    Point<T> operator*(const Transform& a) {
         return a*(*this); 
     }
 };
@@ -123,7 +123,7 @@ public:
         return ret;
     }
 
-    Transform operator*(const Transform& a) {
+    Transform operator*(const Transform& a) const {
         Transform ret;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {

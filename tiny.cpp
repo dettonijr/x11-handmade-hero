@@ -12,6 +12,9 @@ const float  PI_F=3.14159265358979f;
 int main() {
     //Obj o("/mnt/c/Users/sauron/Documents/untitled.obj");
     Obj o("../african_head.obj", "../african_head_diffuse.tga");
+    o.transform(Transform::rotZ(PI_F)); 
+    Obj o2("../african_head.obj", "../african_head_diffuse.tga");
+    o2.transform(Transform::translate(0.9, 0.5, 0.0) * Transform::scale(0.4, 0.4, 0.4) * Transform::rotZ(PI_F)); 
     Point<float> p(1,1,1);
     Transform t = Transform::translate(1.,1.,0)*Transform::rotX(PI_F/2);
     auto p2 = p*t;
@@ -29,6 +32,7 @@ int main() {
 
     Renderer r;
     r.add_obj(o);
+    r.add_obj(o2);
     r.set_light(Point<float>(0,0,1));
     Framebuffer& frame = w.get_framebuffer();
 
@@ -65,7 +69,7 @@ int main() {
         //frame.draw_line(130, 75, 100, 50, Color::Blue);
         //frame.draw_line(100, 50, 50, 50, Color::Blue);
         //frame.draw_line(80, 75, 100, 50, Color::Blue);
-        Transform tr = Transform::scale(300,300,300) * Transform::translate(1.,1.,0) * Transform::rotZ(PI_F) * Transform::rotY(i*0.05);
+        Transform tr = Transform::scale(300,300,300) * Transform::translate(1.,1.,0) * Transform::rotY(i*0.05);
         r.render(frame, tr);
         w.update();
         if (i % 10 == 0) {
