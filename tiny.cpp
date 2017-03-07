@@ -11,10 +11,6 @@ const float  PI_F=3.14159265358979f;
 
 int main() {
     //Obj o("/mnt/c/Users/sauron/Documents/untitled.obj");
-    Obj o("../african_head.obj", "../african_head_diffuse.tga");
-    o.transform(Transform::rotZ(PI_F)); 
-    Obj o2("../african_head.obj", "../african_head_diffuse.tga");
-    o2.transform(Transform::translate(0.9, 0.5, 0.0) * Transform::scale(0.4, 0.4, 0.4) * Transform::rotZ(PI_F)); 
     Point<float> p(1,1,1);
     Transform t = Transform::translate(1.,1.,0)*Transform::rotX(PI_F/2);
     auto p2 = p*t;
@@ -30,9 +26,15 @@ int main() {
                   ExposureMask |
                   StructureNotifyMask);
 
+    TGAFile tga("../african_head_diffuse.tga");
     Renderer r;
-    r.add_obj(o);
-    r.add_obj(o2);
+    for (float f = -1.; f < 2; f += 0.5) {
+        for (float g = -1.; g < 2; g += 0.5) {
+            Obj o("../african_head.obj", tga);
+            o.transform(Transform::translate(f, g, 0.0) * Transform::scale(0.3, 0.3, 0.3) * Transform::rotZ(PI_F)); 
+            r.add_obj(o);
+        }
+    }
     r.set_light(Point<float>(0,0,1));
     Framebuffer& frame = w.get_framebuffer();
 

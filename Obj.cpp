@@ -4,7 +4,7 @@
 #include <fstream>
 
 
-Obj::Obj(const char * filename, const char* texture_file) : texture(texture_file) {
+Obj::Obj(const char * filename, TGAFile& texture_file) : texture(texture_file) {
     std::ifstream in(filename, std::ifstream::in);
     
     std::vector<Point<float>> verts;

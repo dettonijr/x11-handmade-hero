@@ -18,7 +18,7 @@ class Obj final{
     };
 
 public:
-    Obj(const char * filename, const char* texture_file);
+    Obj(const char * filename, TGAFile& texture);
     ~Obj();
 
     void transform(const Transform& f);
@@ -28,7 +28,7 @@ public:
     }
 
 private:
-    TGAFile texture;
+    TGAFile& texture;
     std::vector<Vertex> faces;
 };
 
