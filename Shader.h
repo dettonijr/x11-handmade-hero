@@ -105,3 +105,47 @@ struct FlatShader final: FragmentShader {
         return false;
     }
 };
+
+struct BorderShader final: FragmentShader {
+    const Color c;     
+    const Point<float>& v0;        
+    const Point<float>& v1;        
+    const Point<float>& v2;        
+
+    BorderShader(
+        const Point<float>& v0,        
+        const Point<float>& v1,        
+        const Point<float>& v2,
+        const Color& c
+    ) :
+        v0(v0), 
+        v1(v1),        
+        v2(v2),       
+        c(c)
+    {
+    }
+
+    ~BorderShader() {
+
+    }
+
+    bool fragment(int x, int y, float& outZ, Color& outColor) const override {
+        float w0 = edgeFunction(v1,v2,Point<float>(I2F(x),I2F(y),0));
+        float w1 = edgeFunction(v2,v0,Point<float>(I2F(x),I2F(y),0));
+        float w2 = edgeFunction(v0,v1,Point<float>(I2F(x),I2F(y),0));
+        if (w0 < 0 | w1 < 0 | w2 < 0)
+            return true;
+        float area = edgeFunction(v0,v1,v2);
+        w0 /= area;
+        w1 /= area;
+        w2 /= area;
+        
+        if (w0 > 0.04 && w1 > 0.04 && w2 > 0.04)
+            outColor = Color::Black;
+        else
+            outColor = c;       
+ 
+        outZ = v0.z * w0 + v1.z*w1 + v2.z*w2;
+        return false;
+    }
+};
