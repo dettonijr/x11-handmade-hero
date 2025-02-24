@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project (X11Tests)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 find_package(X11 REQUIRED)
 
 include_directories(${X11_INCLUDE_DIR})

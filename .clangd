@@ -1,0 +1,6 @@
+CompileFlags:
+  CompilationDatabase: "cmake"
+  Add: 
+    - -I/opt/X11/include
+    - -isystem
+    - /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
