@@ -9,12 +9,11 @@
 class Obj final{
 
     struct Vertex {
-        Vertex(TGAFile& texture) : texture(texture) {
+        Vertex() {
         }
 
         std::array<Point<float>, 3> v;
         std::array<Point<float>, 3> vt;
-        TGAFile& texture;
     };
 
 public:
@@ -27,8 +26,9 @@ public:
         return faces;
     }
 
-private:
     TGAFile& texture;
+
+private:
     std::vector<Vertex> faces;
 };
 

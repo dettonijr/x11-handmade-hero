@@ -47,7 +47,7 @@ void Renderer::render(Framebuffer& f, const Transform& t) {
             float intensity = normalized*light_vec;
 
             if (intensity > 0) {
-                TextureShader s{p0, p1, p2, t0, t1, t2, intensity, face.texture};
+                TextureShader s{p0, p1, p2, t0, t1, t2, intensity, obj->texture};
                 // FlatShader s{p0, p1, p2, Color::White*intensity};
                 f.draw_triangle(p0, p1, p2, s); 
             }

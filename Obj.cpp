@@ -27,7 +27,7 @@ Obj::Obj(const char * filename, TGAFile& texture_file) : texture(texture_file) {
             Point<float> p(x, y, z);
             texture_points.push_back(p);
         } else if (command == "f") { 
-            Vertex vertex(texture);
+            Vertex vertex;
             int idx;
             int idxtexture;
             char trash;
