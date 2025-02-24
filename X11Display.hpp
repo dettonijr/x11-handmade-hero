@@ -1,6 +1,7 @@
 #ifndef __DISPLAY_HPP__
 #define __DISPLAY_HPP__
 
+#include <stdlib.h>
 #include <X11/Xlib.h>
 #include <string>
 #include "X11Window.hpp"

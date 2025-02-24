@@ -3,7 +3,6 @@
 
 #include <cstdint>
 #include <vector>
-#include <string>
 #include "Color.h"
 
 struct TGAFile {

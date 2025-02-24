@@ -1,5 +1,18 @@
 # x11-tests
 
-Simple project using XLib
+3D renderer, based on ssloy/tinyrenderer and using XLib for rendering
 
-This is highly based in the Handmade Hero, but in a linux environment
+## MacOS
+
+To run on MacOS install XQuartz to emulate X11
+```
+brew install xquartz
+```
+
+## Run
+
+```
+cmake .
+make
+./render
+```

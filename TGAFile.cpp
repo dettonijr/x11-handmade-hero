@@ -1,6 +1,7 @@
 #include "TGAFile.hpp"
 #include <fstream>
 #include <cassert>
+#include <stdio.h>
 
 TGAFile::TGAFile(const char* file) {
     assert(sizeof(header) == 18);
@@ -8,6 +9,8 @@ TGAFile::TGAFile(const char* file) {
     std::ifstream in(file, std::ifstream::in);
 
     in.read((char*)&header, 18);
+    
+    // dump header for each field
     data.reserve(header.width*header.height);
 
     while (data.size() <= header.width*header.height) {

@@ -1,7 +1,6 @@
 #include "X11Display.hpp"
 #include "Framebuffer.hpp"
 #include <unistd.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "TGAFile.hpp"
     
@@ -18,7 +17,7 @@ int main() {
                   StructureNotifyMask);
 
     Framebuffer& frame = w.get_framebuffer();
-    TGAFile f("../african_head_diffuse.tga");
+    TGAFile f("./african_head_diffuse.tga");
 
     XEvent ev;
     unsigned char off = 0;
@@ -30,15 +29,15 @@ int main() {
                 XConfigureEvent xce = ev.xconfigure;
                 printf("Resizing %d %d\n", xce.width, xce.height);
                 w.resize(xce.width, xce.height);
-            }   
+            }
         }
         std::copy(f.data.begin(), f.data.end(), frame.get_raw_buffer().begin());
         w.update();
-        if (i % 100 == 0) {
+        if (i % 10 == 0) {
             clock_t end = clock();
             unsigned long micros = end - start;
             start = clock();
-            printf("FPS: %d\n", 100000000/micros);
+            printf("FPS: %lu\n", 100000000/micros);
         }
         usleep(3000);
     } 

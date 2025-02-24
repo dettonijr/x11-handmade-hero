@@ -5,7 +5,7 @@
 #include <random>
 #include <cassert>
 
-struct Color final{
+struct Color final {
     uint8_t r;
     uint8_t g;
     uint8_t b;
